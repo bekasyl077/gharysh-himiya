@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ғарыштық химия — Re, Os, Ir, Pt</title>
+<style>
+:root{--bg:#050817;--panel:#101a35;--line:#33436d;--text:#f4f7ff;--muted:#b7c5e8;--cyan:#68e1ff;--gold:#ffd77a}
+*{box-sizing:border-box}body{margin:0;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 20% 5%,#18275a 0,#080f28 38%,#030611 100%);min-height:100vh}
+header{text-align:center;padding:28px 16px 14px}h1{margin:0;font-size:clamp(27px,6vw,44px);letter-spacing:1px}header p{color:var(--muted);margin:8px auto;max-width:720px}
+.wrap{max-width:1100px;margin:auto;padding:12px 16px 36px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0 18px}
+.tab{border:1px solid var(--line);background:#111b38;color:white;border-radius:14px;padding:13px 8px;font-size:17px;font-weight:700;cursor:pointer}.tab.active{background:linear-gradient(135deg,#155276,#263a79);border-color:var(--cyan);box-shadow:0 0 18px #4bdcff40}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px}
+.panel{background:linear-gradient(150deg,#111d3bdf,#0b1228ed);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 14px 40px #0005}
+.viewer{height:370px;position:relative;overflow:hidden;border-radius:15px;background:radial-gradient(circle at 50% 45%,#1d3264,#080e24 68%,#030611)}
+#scene{width:100%;height:100%;display:block;touch-action:none}.hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#c6d7ff;font-size:12px;pointer-events:none;text-shadow:0 1px 4px #000}
+.switch{display:flex;gap:8px;margin-top:12px}.switch button{flex:1;border-radius:12px;padding:11px 8px;border:1px solid #40517e;background:#111a34;color:white;font-weight:600;cursor:pointer}.switch button.active{border-color:var(--cyan);background:#123d59}
+h2{margin:0 0 7px;font-size:29px}.subtitle{color:var(--gold);font-weight:650;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.fact{background:#0a132b;border:1px solid #28395f;border-radius:12px;padding:11px}.fact small{display:block;color:#9eb0d8;font-size:12px}.fact strong{display:block;margin-top:4px;font-size:15px}
+.section{margin-top:15px}.section h3{font-size:16px;color:var(--cyan);margin:0 0 6px}.section p{color:#d7e1fa;line-height:1.55;margin:0}
+footer{text-align:center;color:#91a2ca;font-size:12px;margin-top:18px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.viewer{height:330px}.tabs{gap:6px}.tab{font-size:15px;padding:12px 4px}}
+</style>
+</head>
+<body>
+<header><h1>✦ ҒАРЫШТЫҚ ХИМИЯ ✦</h1><p>Периодтық жүйедегі асыл және сирек металдар: 3D модельдер, атом құрылысы және қызықты деректер</p></header>
+<main class="wrap">
+<nav class="tabs" aria-label="Элементтер">
+<button class="tab active" data-el="Re">Re · Рений</button>
+<button class="tab" data-el="Os">Os · Осмий</button>
+<button class="tab" data-el="Ir">Ir · Иридий</button>
+<button class="tab" data-el="Pt">Pt · Платина</button>
+</nav>
+<div class="layout">
+<section class="panel">
+<div class="viewer"><canvas id="scene"></canvas><div class="hint">Модельді саусағыңмен немесе тышқанмен сүйреп айналдыр · үлкейтуге болады</div></div>
+<div class="switch"><button id="substance" class="active">Металл моделі</button><button id="atom">Атом моделі</button></div>
+</section>
+<section class="panel">
+<h2 id="name">Рений (Re)</h2><div class="subtitle" id="tagline">Күміс түсті, өте жоғары балқитын металл</div>
+<div class="grid">
+<div class="fact"><small>Реттік нөмірі</small><strong id="number">75</strong></div>
+<div class="fact"><small>Салыстырмалы атомдық массасы</small><strong id="mass">186.207</strong></div>
+<div class="fact"><small>Тобы / периоды</small><strong id="group">7 / 6</strong></div>
+<div class="fact"><small>Протон / электрон</small><strong id="pe">75 / 75</strong></div>
+<div class="fact"><small>Нейтрон саны (изотоп)</small><strong id="neutrons">112 (Re-187)</strong></div>
+<div class="fact"><small>Электрондық қабаттары</small><strong id="shells">2, 8, 18, 32, 13, 2</strong></div>
+</div>
+<div class="section"><h3>Электрондық конфигурациясы</h3><p id="config">[Xe] 4f¹⁴ 5d⁵ 6s²</p></div>
+<div class="section"><h3>Қасиеттері</h3><p id="properties"></p></div>
+<div class="section"><h3>Табиғатта кездесуі және қолданылуы</h3><p id="uses"></p></div>
+<div class="section"><h3>Қызықты дерек</h3><p id="fact"></p></div>
+</section>
+</div>
+<footer>Ескерту: атомның 3D көрінісі — оқу мақсатындағы ықшамдалған модель. Электрондар нақты орбиталармен осылай айналмайды.</footer>
+</main>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+const data={
+Re:{name:'Рений (Re)',tag:'Күміс түсті, өте жоғары балқитын металл',n:75,mass:'186.207',group:'7 / 6',p:75,e:75,neut:'112 (Re-187)',shell:'2, 8, 18, 32, 13, 2',config:'[Xe] 4f¹⁴ 5d⁵ 6s²',color:0x9ba7b7,properties:'Тығыз, қатты, күміс түсті металл. Балқу температурасы өте жоғары — шамамен 3186 °C. Коррозияға төзімді.',uses:'Никель негізіндегі жоғары температура қорытпаларына қосылады. Мұндай қорытпалар реактивті қозғалтқыштардың кейбір бөлшектерінде қолданылады. Мұнай өңдеу катализаторларында да пайдаланылады.',fact:'Рений — табиғатта өте сирек кездесетін элементтердің бірі. Оның атауы Рейн өзенінің латынша атауынан шыққан.',iso:187},
+Os:{name:'Осмий (Os)',tag:'Өте тығыз, көкшіл-ақ түсті металл',n:76,mass:'190.23',group:'8 / 6',p:76,e:76,neut:'116 (Os-192)',shell:'2, 8, 18, 32, 14, 2',config:'[Xe] 4f¹⁴ 5d⁶ 6s²',color:0x8ea5c5,properties:'Көкшіл-ақ түсті, өте қатты және аса тығыз металл. Балқу температурасы шамамен 3033 °C. Кейбір қосылыстары улы болғандықтан, олармен жұмыс арнайы қауіпсіздік талаптарын қажет етеді.',uses:'Осмийдің кейбір қорытпалары мен қосылыстары арнайы зертханалық және өнеркәсіптік мақсаттарда, мысалы берік электр түйіспелерінде және катализаторларда қолданылады.',fact:'Осмий — белгілі ең тығыз элементтердің бірі. Оның атауы гректің «иіс» деген сөзінен шыққан.',iso:192},
+Ir:{name:'Иридий (Ir)',tag:'Коррозияға өте төзімді асыл металл',n:77,mass:'192.217',group:'9 / 6',p:77,e:77,neut:'116 (Ir-193)',shell:'2, 8, 18, 32, 15, 2',config:'[Xe] 4f¹⁴ 5d⁷ 6s²',color:0xc4c8d1,properties:'Күміс-ақ түсті, қатты әрі тығыз металл. Коррозияға және жоғары температураға төзімді. Балқу температурасы шамамен 2446 °C.',uses:'Арнайы қорытпаларда, жоғары температураға төзімді бөлшектерде, ұшқын шамдарының электродтарында және ғылыми құралдарда пайдаланылады.',fact:'Иридий атауы кемпірқосақ құдайы Ирида есімімен байланысты: оның қосылыстары әртүрлі түстер көрсете алады.',iso:193},
+Pt:{name:'Платина (Pt)',tag:'Бағалы, күміс-ақ түсті асыл металл',n:78,mass:'195.084',group:'10 / 6',p:78,e:78,neut:'117 (Pt-195)',shell:'2, 8, 18, 32, 17, 1',config:'[Xe] 4f¹⁴ 5d⁹ 6s¹',color:0xd9dce5,properties:'Иілгіш, созылғыш, тығыз және коррозияға төзімді металл. Балқу температурасы шамамен 1768 °C. Көптеген химиялық заттармен оңай әрекеттеспейді.',uses:'Зергерлік бұйымдарда, автокөлік газдарын тазартатын катализаторларда, химия өнеркәсібінде және кейбір медициналық құрылғыларда қолданылады.',fact:'Платина атауы испан тіліндегі «platina» — «кішкентай күміс» сөзінен шыққан.',iso:195}
+};
+const canvas=document.querySelector('#scene');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,0,7);
+scene.add(new THREE.AmbientLight(0xffffff,1.25));const light=new THREE.PointLight(0x8bdcff,35);light.position.set(3,4,5);scene.add(light);const rim=new THREE.PointLight(0xffd58a,18);rim.position.set(-4,-2,3);scene.add(rim);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.autoRotate=true;controls.autoRotateSpeed=1.15;controls.minDistance=3;controls.maxDistance=12;
+const root=new THREE.Group();scene.add(root);let current='Re',mode='substance';
+function clear(){while(root.children.length){const o=root.children.pop();o.traverse?.(x=>{x.geometry?.dispose();if(x.material){if(Array.isArray(x.material))x.material.forEach(m=>m.dispose());else x.material.dispose();}})}}
+function ball(parent,r,color,x,y,z,metal=0.8){const mesh=new THREE.Mesh(new THREE.SphereGeometry(r,32,24),new THREE.MeshStandardMaterial({color,metalness:metal,roughness:.24}));mesh.position.set(x,y,z);parent.add(mesh);return mesh}
+function buildSubstance(d){clear();const group=new THREE.Group();root.add(group);const mat=new THREE.MeshStandardMaterial({color:d.color,metalness:.92,roughness:.2});
+const geo=new THREE.IcosahedronGeometry(1.55,3);const mesh=new THREE.Mesh(geo,mat);group.add(mesh);
+const wire=new THREE.Mesh(new THREE.IcosahedronGeometry(1.58,2),new THREE.MeshBasicMaterial({color:0xb8e8ff,wireframe:true,transparent:true,opacity:.18}));group.add(wire);
+for(let i=0;i<22;i++){let a=i*2.399,b=Math.acos(1-2*(i+.5)/22),r=1.68;const x=r*Math.sin(b)*Math.cos(a),y=r*Math.cos(b),z=r*Math.sin(b)*Math.sin(a);ball(group,.055,0x8eeaff,x,y,z,.25)}
+}
+function buildAtom(d){clear();const core=new THREE.Group();root.add(core);let neut=d.iso-d.n;for(let i=0;i<Math.min(d.p,40);i++){let a=i*2.4,b=Math.acos(1-2*(i+.5)/Math.min(d.p,40));ball(core,.12,0xff6b78,.28*Math.sin(b)*Math.cos(a),.28*Math.cos(b),.28*Math.sin(b)*Math.sin(a),.1)}
+for(let i=0;i<Math.min(neut,40);i++){let a=i*2.4+1,b=Math.acos(1-2*(i+.5)/Math.min(neut,40));ball(core,.12,0x6aa9ff,.28*Math.sin(b)*Math.cos(a),.28*Math.cos(b),.28*Math.sin(b)*Math.sin(a),.1)}
+const shells=d.shell.split(', ').map(Number);shells.forEach((count,idx)=>{let r=1.05+idx*.43;const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.012,8,100),new THREE.MeshBasicMaterial({color:0x5de4ff,transparent:true,opacity:.6}));ring.rotation.x=Math.PI/2;root.add(ring);for(let j=0;j<count;j++){let a=2*Math.PI*j/count;const e=ball(root,.07,0xffdf79,r*Math.cos(a),r*Math.sin(a),0,.2);e.userData={angle:a,radius:r,speed:.25+idx*.035};electronMeshes.push(e)}})}
+}
+let electronMeshes=[];
+function draw(){const d=data[current];electronMeshes=[];if(mode==='atom')buildAtom(d);else buildSubstance(d)}
+function update(){const d=data[current];document.querySelector('#name').textContent=d.name;document.querySelector('#tagline').textContent=d.tag;document.querySelector('#number').textContent=d.n;document.querySelector('#mass').textContent=d.mass;document.querySelector('#group').textContent=d.group;document.querySelector('#pe').textContent=`${d.p} / ${d.e}`;document.querySelector('#neutrons').textContent=d.neut;document.querySelector('#shells').textContent=d.shell;document.querySelector('#config').textContent=d.config;document.querySelector('#properties').textContent=d.properties;document.querySelector('#uses').textContent=d.uses;document.querySelector('#fact').textContent=d.fact;draw();document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.el===current))}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{current=b.dataset.el;update();history.replaceState(null,'','#'+current)}));
+document.querySelector('#substance').addEventListener('click',()=>{mode='substance';document.querySelector('#substance').classList.add('active');document.querySelector('#atom').classList.remove('active');draw()});
+document.querySelector('#atom').addEventListener('click',()=>{mode='atom';document.querySelector('#atom').classList.add('active');document.querySelector('#substance').classList.remove('active');draw()});
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(canvas);resize();
+if(['Re','Os','Ir','Pt'].includes(location.hash.slice(1)))current=location.hash.slice(1);update();
+function animate(t){requestAnimationFrame(animate);electronMeshes.forEach(e=>{e.position.x=e.userData.radius*Math.cos(e.userData.angle+t*.0003*e.userData.speed*10);e.position.y=e.userData.radius*Math.sin(e.userData.angle+t*.0003*e.userData.speed*10)});controls.update();renderer.render(scene,camera)}animate(0);
+</script>
+</body></html>
